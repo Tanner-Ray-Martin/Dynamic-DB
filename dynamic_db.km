@@ -1,0 +1,385 @@
+{
+    "root": {
+        "data": {
+            "id": "d296uid67o00",
+            "created": 1719327824002,
+            "text": "Dynamic DB Generator",
+            "expandState": "expand"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "d29dzaw6cdk0",
+                    "created": 1719347947327,
+                    "text": "Group",
+                    "layout_mind_offset": {
+                        "x": -142,
+                        "y": -19
+                    },
+                    "layout_right_offset": {
+                        "x": 34,
+                        "y": -228
+                    },
+                    "expandState": "expand",
+                    "font-weight": "bold"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "d29dztetiu80",
+                            "created": 1719347987636,
+                            "text": "Category",
+                            "expandState": "expand"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "d29e0idklwo0",
+                                    "created": 1719348041981,
+                                    "text": "MGMT",
+                                    "expandState": "expand"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "d29e0vwyyd40",
+                                            "created": 1719348071452,
+                                            "text": "CRUD",
+                                            "layout_right_offset": {
+                                                "x": 88,
+                                                "y": 44
+                                            },
+                                            "expandState": "expand"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "d29e0pnl40w0",
+                                    "created": 1719348057824,
+                                    "text": "User",
+                                    "layout_right_offset": {
+                                        "x": 7,
+                                        "y": 4
+                                    },
+                                    "expandState": "expand"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "d29e18mwylc0",
+                                            "created": 1719348099142,
+                                            "text": "RU",
+                                            "layout_right_offset": {
+                                                "x": 67,
+                                                "y": 54
+                                            },
+                                            "expandState": "expand"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "d29e1wugaa80",
+                                    "created": 1719348151840,
+                                    "text": "Developer",
+                                    "layout_right_offset": {
+                                        "x": -19,
+                                        "y": 25
+                                    },
+                                    "expandState": "expand"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "d29e2g0ll1k0",
+                                            "created": 1719348193571,
+                                            "text": "CRUD",
+                                            "layout_right_offset": {
+                                                "x": 34.49999981373526,
+                                                "y": 52.749999944120646
+                                            },
+                                            "expandState": "expand"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "d29e2wn6r4w0",
+                    "created": 1719348229765,
+                    "text": "Generating Databases",
+                    "layout_mind_offset": {
+                        "x": -832,
+                        "y": -17
+                    },
+                    "expandState": "expand",
+                    "layout_right_offset": {
+                        "x": 24,
+                        "y": -16
+                    },
+                    "color": "#000000",
+                    "font-weight": "bold"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "d29e3ntlhqw0",
+                            "created": 1719348288926,
+                            "text": "API Endpoints",
+                            "layout_left_offset": {
+                                "x": -258.00000074505806,
+                                "y": 226
+                            },
+                            "layout_right_offset": {
+                                "x": 42,
+                                "y": -36
+                            },
+                            "expandState": "expand"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "d29e409ow1k0",
+                            "created": 1719348316020,
+                            "text": "Pydantic Schemas",
+                            "layout_left_offset": {
+                                "x": -155.50000040978193,
+                                "y": -28.249999981373662
+                            },
+                            "expandState": "expand"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "d29e5uaps680",
+                            "created": 1719348459750,
+                            "text": "SqlAlchemy Models",
+                            "layout_left_offset": {
+                                "x": -268.74999979510903,
+                                "y": 52.25000005587924
+                            },
+                            "expandState": "expand"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "d29e647m2i00",
+                            "created": 1719348481330,
+                            "text": "Json Schemas",
+                            "layout_left_offset": {
+                                "x": -241.75000031664968,
+                                "y": -68
+                            },
+                            "expandState": "expand"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "d29e7rso15s0",
+                            "created": 1719348611034,
+                            "text": "Url Routing",
+                            "layout_left_offset": {
+                                "x": -230.7500009126959,
+                                "y": 136.49999914318323
+                            },
+                            "layout_right_offset": {
+                                "x": 36,
+                                "y": 14
+                            },
+                            "expandState": "expand"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "d29e8279iew0",
+                            "created": 1719348633684,
+                            "text": "User Input",
+                            "layout_left_offset": {
+                                "x": 433,
+                                "y": -24
+                            },
+                            "layout_right_offset": {
+                                "x": 18,
+                                "y": 22
+                            },
+                            "expandState": "expand"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "d29e8d8wik80",
+                                    "created": 1719348657728,
+                                    "text": "UI Components",
+                                    "layout_left_offset": {
+                                        "x": 335,
+                                        "y": 21
+                                    },
+                                    "expandState": "expand"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "d29e8pco92g0",
+                                    "created": 1719348684077,
+                                    "text": "Icons",
+                                    "layout_left_offset": {
+                                        "x": 299,
+                                        "y": 101
+                                    },
+                                    "expandState": "expand"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "d29e8z9nmd40",
+                                    "created": 1719348705662,
+                                    "text": "ORM Selection",
+                                    "layout_left_offset": {
+                                        "x": 334,
+                                        "y": -134
+                                    },
+                                    "expandState": "expand"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "d29easwasgw0",
+                                    "created": 1719348848522,
+                                    "text": "Type Validation Selection",
+                                    "layout_left_offset": {
+                                        "x": 408,
+                                        "y": 75
+                                    },
+                                    "layout_right_offset": {
+                                        "x": -1,
+                                        "y": 25
+                                    },
+                                    "expandState": "expand"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "d29eh52nuo00",
+                            "created": 1719349345214,
+                            "text": "Import Templates",
+                            "layout_right_offset": {
+                                "x": 17,
+                                "y": 68
+                            },
+                            "expandState": "expand"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "d29e4kj7eg80",
+                    "created": 1719348360131,
+                    "text": "Reporting",
+                    "layout_mind_offset": {
+                        "x": -197.99999798834335,
+                        "y": -312.99999895691866
+                    },
+                    "layout_right_offset": {
+                        "x": 16,
+                        "y": 94
+                    },
+                    "expandState": "expand",
+                    "font-weight": "bold"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "d29e6h0vlz40",
+                            "created": 1719348509221,
+                            "text": "Exports",
+                            "layout_left_offset": {
+                                "x": -160.74999793246388,
+                                "y": 54.74999905005103
+                            },
+                            "expandState": "expand"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "d29e6kzeeew0",
+                            "created": 1719348517839,
+                            "text": "Charts",
+                            "layout_left_offset": {
+                                "x": -151.49999810010195,
+                                "y": -69.49999899417168
+                            },
+                            "expandState": "expand"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "d29e6pbuf480",
+                            "created": 1719348527299,
+                            "text": "Overview",
+                            "layout_left_offset": {
+                                "x": -157.99999783933163,
+                                "y": 39.499999441206455
+                            },
+                            "expandState": "expand"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "d29e6uarjfk0",
+                            "created": 1719348538117,
+                            "text": "Custom",
+                            "layout_left_offset": {
+                                "x": -161.99999783933163,
+                                "y": 43.24999938532716
+                            },
+                            "expandState": "expand"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "d29e70rcqg80",
+                            "created": 1719348552181,
+                            "text": "Scheduled",
+                            "layout_left_offset": {
+                                "x": -119.24999841675162,
+                                "y": 52.49999944120643
+                            },
+                            "expandState": "expand"
+                        },
+                        "children": []
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "default",
+    "theme": "snow",
+    "version": "1.4.43"
+}
