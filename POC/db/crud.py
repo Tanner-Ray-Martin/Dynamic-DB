@@ -10,18 +10,22 @@ model_schema_map = {
     "gen": {"model": GenModel, "schema": GenSchema},
 }
 
-def get_model(model_schema_name:str)->DeclarativeMeta:
+
+def get_model(model_schema_name: str) -> DeclarativeMeta:
     ms_map = model_schema_map.get(model_schema_name)
     if ms_map:
-        return ms_map.get('model')
-    
-def get_schema(model_schema_name:str)->BaseModel:
+        return ms_map.get("model")
+
+
+def get_schema(model_schema_name: str) -> BaseModel:
     ms_map = model_schema_map.get(model_schema_name)
     if ms_map:
-        return ms_map.get('schema')
-    
-def get_model_and_schema(model_schema_name:str):
+        return ms_map.get("schema")
+
+
+def get_model_and_schema(model_schema_name: str):
     return get_model(model_schema_name), get_schema(model_schema_name)
+
 
 def create(db: Session, schema: UserSchema | GenSchema):
     if isinstance(schema, UserSchema):
