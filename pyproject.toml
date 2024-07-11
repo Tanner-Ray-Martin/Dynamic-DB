@@ -18,7 +18,7 @@ platforms = ["win-64"]
 Dynamic-DB = { path = ".", editable = true }
 
 [tool.pixi.tasks]
-run_poc = "uvicorn POC.api.main:app"
+run_poc = "uvicorn POC.api.main:app --reload"
 
 [tool.pixi.dependencies]
 sqlmodel = ">=0.0.19,<0.1"

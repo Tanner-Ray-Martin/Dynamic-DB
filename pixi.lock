@@ -224,7 +224,7 @@ packages:
   name: dynamic-db
   version: 0.1.0
   path: .
-  sha256: c24a7583ed1b27ceb5c5f24e4d3a432cbf4a24d1e67d30e0911a971dd27a4cd5
+  sha256: e69e2ed07a0d4842206ee0be1e3848df356f63058eac589fcb53118d35e53291
   requires_python: '>=3.11'
   editable: true
 - kind: conda
