@@ -10,6 +10,7 @@ from fastui.forms import fastui_form
 from pydantic import BaseModel
 from sqlmodel import Session, select
 from POC.db.database import User, UserForm, engine
+from POC.db.models.stock_models.db_models import DbInfoForm, FieldForm, AddFieldForm
 
 
 @asynccontextmanager
@@ -50,6 +51,77 @@ def get_success_button():
                 c.Button(text="Home", on_click=GoToEvent(url="/")),
             ]
         )
+    ]
+
+
+@app.get(
+    "/api/forms/create/database",
+    response_model=FastUI,
+    response_model_exclude_none=True,
+    include_in_schema=False,
+)
+async def create_new_database():
+    return [
+        c.Page(
+            components=[
+                c.Heading(text="Dynamic-DB", level=2),
+                c.Paragraph(
+                    text="Welcome! Here you will begin creating a new database."
+                ),
+                c.Markdown(text="---"),
+                c.Div(
+                    components=[
+                        c.Heading(
+                            text="Step 1. Basic Database Information",
+                            level=3,
+                            class_name="text-center",
+                        ),
+                        c.Markdown(text="---"),
+                        c.ModelForm(
+                            loading=[c.Text(text="Submitting")],
+                            model=DbInfoForm,
+                            submit_url="/api/forms/create/database",
+                        ),
+                        c.Markdown(text="---"),
+                        c.ModelForm(
+                            loading=[c.Text(text="Submitting")],
+                            model=AddFieldForm,
+                            method="GET",
+                            submit_url="/api/forms/create/databaseField",
+                        ),
+                    ]
+                ),
+                c.Markdown(text="---"),
+            ]
+        )
+    ]
+
+
+@app.get(
+    "/api/forms/create/databaseField",
+    response_model=FastUI,
+    response_model_exclude_none=True,
+    include_in_schema=False,
+)
+async def create_new_database_field():
+    return [
+        c.Heading(
+            text="New Field Info.",
+            level=3,
+            class_name="text-center",
+        ),
+        c.ModelForm(
+            display_mode="inline",
+            loading=[c.Text(text="Submitting")],
+            model=FieldForm,
+            submit_url="/api/forms/create/database",
+        ),
+        c.ModelForm(
+            loading=[c.Text(text="Submitting")],
+            model=AddFieldForm,
+            method="GET",
+            submit_url="/api/forms/create/databaseField",
+        ),
     ]
 
 
