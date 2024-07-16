@@ -10,7 +10,14 @@ from fastui.forms import fastui_form
 from pydantic import BaseModel
 from sqlmodel import Session, select
 from POC.db.database import User, UserForm, engine
-from POC.db.models.stock_models.db_models import DbInfoForm, FieldForm, AddFieldForm
+from POC.db.models.stock_models.db_models import (
+    DbInfoForm,
+    FieldForm,
+    AddFieldForm,
+    db_engine,
+    DbInfo,
+    FieldInfo,
+)
 
 
 @asynccontextmanager
@@ -82,13 +89,6 @@ async def create_new_database():
                             model=DbInfoForm,
                             submit_url="/api/forms/create/database",
                         ),
-                        c.Markdown(text="---"),
-                        c.ModelForm(
-                            loading=[c.Text(text="Submitting")],
-                            model=AddFieldForm,
-                            method="GET",
-                            submit_url="/api/forms/create/databaseField",
-                        ),
                     ]
                 ),
                 c.Markdown(text="---"),
@@ -111,15 +111,9 @@ async def create_new_database_field():
             class_name="text-center",
         ),
         c.ModelForm(
-            display_mode="inline",
+            display_mode="default",
             loading=[c.Text(text="Submitting")],
             model=FieldForm,
-            submit_url="/api/forms/create/database",
-        ),
-        c.ModelForm(
-            loading=[c.Text(text="Submitting")],
-            model=AddFieldForm,
-            method="GET",
             submit_url="/api/forms/create/databaseField",
         ),
     ]
@@ -145,6 +139,52 @@ async def add_user():
                 ),
             ]
         )
+    ]
+
+
+@app.post(
+    "/api/forms/create/database",
+    response_model=FastUI,
+    response_model_exclude_none=True,
+    include_in_schema=False,
+)
+async def create_database(form: Annotated[DbInfoForm, fastui_form(DbInfoForm)]):
+    with Session(db_engine) as session:
+        db = DbInfo(**form.model_dump())
+        session.add(db)
+        session.commit()
+    return [
+        c.Text(text="Database Info Created!"),
+        c.Markdown(text="---"),
+        c.ModelForm(
+            loading=[c.Text(text="Submitting")],
+            model=AddFieldForm,
+            method="GET",
+            submit_url="/api/forms/create/databaseField",
+        ),
+    ]
+
+
+@app.post(
+    "/api/forms/create/databaseField",
+    response_model=FastUI,
+    response_model_exclude_none=True,
+    include_in_schema=False,
+)
+async def create_database_field(form: Annotated[FieldForm, fastui_form(FieldForm)]):
+    with Session(db_engine) as session:
+        field = FieldInfo(**form.model_dump())
+        session.add(field)
+        session.commit()
+    return [
+        c.Text(text="Field Info Created!"),
+        c.Markdown(text="---"),
+        c.ModelForm(
+            loading=[c.Text(text="Submitting")],
+            model=AddFieldForm,
+            method="GET",
+            submit_url="/api/forms/create/databaseField",
+        ),
     ]
 
 
