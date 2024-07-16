@@ -1,39 +1,59 @@
-from sqlmodel import SQLModel, Field as SField
+from sqlmodel import SQLModel, Field, create_engine
 from datetime import datetime
 from typing import Literal, Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
+
+sqlite_url = "sqlite:///database_db.sqlite3"
+
+DATA_TYPES = Literal[
+    "str", "int", "float", "bool", "date", "datetime", "time", "json", "list", "dict"
+]
 
 
-class DbInfoForm(BaseModel):
+class DbInfoForm(SQLModel):
     name: str = Field(
-        json_schema_extra={"placeholder": "My Database"},
         title="Database Name",
         description="The common name for your database",
     )
-    short_name: str = SField(
+    short_name: str = Field(
         title="Database Short Name",
         description="The Short name for the database.",
-        max_length=2,
+        max_length=10,
     )
-    display_name: str = SField(
+    display_name: str = Field(
         title="Database Display Name",
         description="The display name of the database",
-        schema_extra={"placeholder": "My Database #1"},
     )
     category: Optional[str] = Field(
         title="Database Category",
         description="Category of Database. Like Your department, or the type of records.",
-        json_schema_extra={"placeholder": "Warehouse"},
     )
     alias: Optional[str] = Field(
         title="Database Alias",
         description="What other people or systems might refer your database or category as.",
-        examples=["inventory"],
     )
     description: Optional[str] = Field(
         title="Detailed Description",
         description="Write a detailed description of this database and what it is for.",
     )
+
+
+class DbInfo(DbInfoForm, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    created_at: datetime = Field(default=datetime.now())
+    updated_at: datetime = Field(default=datetime.now())
+    status: Optional[str] = Field(default="building", max_length=100)
+
+
+class FieldInfo(SQLModel, table=True):
+    id: int = Field(primary_key=True)
+    db_id: int
+    name: str = Field(max_length=100)
+    data_type: str = Field()
+    required: bool
+    default: Optional[str] = Field(max_length=100)
+    created_at: datetime = Field(default=datetime.now())
+    updated_at: datetime = Field(default=datetime.now())
 
 
 class AddFieldForm(BaseModel):
@@ -45,31 +65,22 @@ class FieldForm(BaseModel):
     name: str = Field(
         title="Field Name",
         description="The name of the field in the database",
-        json_schema_extra={"placeholder": "My Field"},
     )
-    data_type: Literal[
-        "str",
-        "int",
-        "float",
-        "bool",
-        "date",
-        "datetime",
-        "time",
-        "json",
-        "list",
-        "dict",
-    ] = Field(
+    data_type: DATA_TYPES = Field(
         title="Data Type",
         description="The type of data this field will store",
-        json_schema_extra={"placeholder": "str"},
     )
     required: bool = Field(
         title="Required",
         description="Is this field required for the database?",
-        json_schema_extra={"placeholder": True},
     )
     default: Optional[str] = Field(
         title="Default Value",
         description="The default value for this field in the database",
-        json_schema_extra={"placeholder": "Default Value"},
     )
+
+
+# create the engine
+db_engine = create_engine(sqlite_url, echo=True)
+
+SQLModel.metadata.create_all(db_engine)
