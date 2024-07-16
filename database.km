@@ -1,0 +1,55 @@
+{
+    "root": {
+        "data": {
+            "id": "d2nxrw0nwo00",
+            "created": 1720825627989,
+            "text": "Database Form",
+            "expandState": "expand"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "d2nxs4xfpns0",
+                    "created": 1720825647385,
+                    "text": "Info",
+                    "layout": null,
+                    "expandState": "expand"
+                },
+                "children": []
+            },
+            {
+                "data": {
+                    "id": "d2nxtrzw0rc0",
+                    "created": 1720825775963,
+                    "text": "fields",
+                    "expandState": "expand",
+                    "layout": null
+                },
+                "children": []
+            },
+            {
+                "data": {
+                    "id": "d2nxut4n13k0",
+                    "created": 1720825856792,
+                    "text": "workflows",
+                    "layout": null,
+                    "expandState": "expand"
+                },
+                "children": []
+            },
+            {
+                "data": {
+                    "id": "d2ny3kdy0w00",
+                    "created": 1720826543041,
+                    "text": "Triggers",
+                    "layout": null,
+                    "expandState": "expand"
+                },
+                "children": []
+            }
+        ]
+    },
+    "template": "right",
+    "theme": "fish",
+    "version": "1.4.43"
+}

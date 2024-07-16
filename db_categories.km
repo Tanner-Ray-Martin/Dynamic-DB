@@ -1,0 +1,13 @@
+{
+    "root": {
+        "data": {
+            "id": "d2nx6ogjnf40",
+            "created": 1720823965888,
+            "text": "Category"
+        },
+        "children": []
+    },
+    "template": "structure",
+    "theme": "tianpan-compact",
+    "version": "1.4.43"
+}
