@@ -16,7 +16,7 @@
                         "x": -142,
                         "y": -19
                     },
-                    "expandState": "expand",
+                    "expandState": "collapse",
                     "font-weight": "bold",
                     "layout": null,
                     "layout_fish-bone-master_offset": {
@@ -114,7 +114,7 @@
                         "x": -832,
                         "y": -17
                     },
-                    "expandState": "expand",
+                    "expandState": "collapse",
                     "color": "#000000",
                     "font-weight": "bold",
                     "layout": null
@@ -215,7 +215,7 @@
                         "x": 14.499998845159894,
                         "y": -435.4999971315264
                     },
-                    "expandState": "expand",
+                    "expandState": "collapse",
                     "font-weight": "bold",
                     "layout": null
                 },
@@ -301,7 +301,7 @@
                         "x": -19.999999701976776,
                         "y": 131.2499980442227
                     },
-                    "expandState": "expand",
+                    "expandState": "collapse",
                     "layout": null
                 },
                 "children": [
@@ -418,7 +418,8 @@
                     "id": "d2hvcg9b1hk0",
                     "created": 1720209416261,
                     "text": "Creation Model",
-                    "layout": null
+                    "layout": null,
+                    "expandState": "collapse"
                 },
                 "children": [
                     {
