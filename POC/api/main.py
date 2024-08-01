@@ -1,7 +1,7 @@
 from contextlib import asynccontextmanager
 from datetime import date
 from typing import Annotated
-from fastapi import FastAPI, Form, Query
+from fastapi import FastAPI
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastui import FastUI, prebuilt_html, components as c
 from fastui.events import GoToEvent

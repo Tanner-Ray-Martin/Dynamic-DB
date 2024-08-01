@@ -1,6 +1,5 @@
 # POC/tests/test_db_models.py
 
-import pytest
 from datetime import datetime
 from POC.db.models.stock_models.db_models import DbInfo, FieldInfo, DbInfoForm, FieldForm
 
