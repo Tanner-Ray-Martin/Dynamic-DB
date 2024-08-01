@@ -14,9 +14,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: chartboost/ruff-action@v1
+      - name: Set up Python
+        uses: actions/setup-python@v2
         with:
-          args: --fix
+          python-version: '3.x'  # Ensure the appropriate Python version is used
+      - name: Install ruff
+        run: pip install ruff
+      - name: Run ruff with --fix
+        run: ruff check . --fix
+
   
   tests:
     runs-on: ubuntu-latest
