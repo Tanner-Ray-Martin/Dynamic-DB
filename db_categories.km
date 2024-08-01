@@ -3,9 +3,65 @@
         "data": {
             "id": "d2nx6ogjnf40",
             "created": 1720823965888,
-            "text": "Category"
+            "text": "DB Creation"
         },
-        "children": []
+        "children": [
+            {
+                "data": {
+                    "id": "d2w50oofxgw0",
+                    "created": 1721658544713,
+                    "text": "DB Info Form"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "d2w51inibu00",
+                            "created": 1721658609960,
+                            "text": "Db ID",
+                            "layout_bottom_offset": {
+                                "x": -212,
+                                "y": 106
+                            }
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "d2w51qs89nk0",
+                                    "created": 1721658627659,
+                                    "text": "DB Field Form",
+                                    "layout_bottom_offset": {
+                                        "x": 203,
+                                        "y": 36
+                                    }
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "d2w52uwio340",
+                                            "created": 1721658714990,
+                                            "text": "db id"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "d2w534hksc00",
+                                            "created": 1721658735854,
+                                            "text": "db field id",
+                                            "layout_bottom_offset": {
+                                                "x": 105,
+                                                "y": 1
+                                            }
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
     },
     "template": "structure",
     "theme": "tianpan-compact",

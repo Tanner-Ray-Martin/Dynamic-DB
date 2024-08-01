@@ -45,28 +45,15 @@ class DbInfo(DbInfoForm, table=True):
     status: Optional[str] = Field(default="building", max_length=100)
 
 
-class FieldInfo(SQLModel, table=True):
-    id: int = Field(primary_key=True)
-    db_id: int
-    name: str = Field(max_length=100)
-    data_type: str = Field()
-    required: bool
-    default: Optional[str] = Field(max_length=100)
-    created_at: datetime = Field(default=datetime.now())
-    updated_at: datetime = Field(default=datetime.now())
-
-
-class AddFieldForm(BaseModel):
-    add_field: bool
-
-
 # make a new fieldform the user can fill out to add a new field to the database
-class FieldForm(BaseModel):
+
+
+class FieldForm(SQLModel):
     name: str = Field(
         title="Field Name",
         description="The name of the field in the database",
     )
-    data_type: DATA_TYPES = Field(
+    data_type: str = Field(
         title="Data Type",
         description="The type of data this field will store",
     )
@@ -74,10 +61,20 @@ class FieldForm(BaseModel):
         title="Required",
         description="Is this field required for the database?",
     )
-    default: Optional[str] = Field(
+    default: str = Field(
         title="Default Value",
         description="The default value for this field in the database",
     )
+
+
+class FieldInfo(FieldForm, table=True):
+    id: int = Field(primary_key=True)
+    db_id: int
+    created_at: datetime = Field(default=datetime.now())
+    updated_at: datetime = Field(default=datetime.now())
+
+
+class AddFieldForm(BaseModel): ...
 
 
 # create the engine
