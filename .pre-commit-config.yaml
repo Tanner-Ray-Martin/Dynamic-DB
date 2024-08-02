@@ -3,6 +3,6 @@ repos:
     rev: v0.5.5  # Use the latest stable version
     hooks:
       - id: ruff
-        args: ["check", "--select", "I", "--fix"]
+        args: ["--fix"]
       - id: ruff-format  
 
