@@ -74,3 +74,88 @@ def test_create_database_field():
     assert data[4]["text"] == "Data Type: string"
     assert data[5]["text"] == "Required: True"
     assert data[6]["text"] == "Default: default_value"
+
+
+### POC SPRINT TESTS ###
+
+
+# List Databases
+def test_list_databases(): ...
+
+
+# Database Form
+def test_database_form(): ...
+
+
+# Database Create
+def test_create_database2(): ...
+
+
+# Get Database
+def test_get_database(): ...
+
+
+# Update Database
+def test_update_database(): ...
+
+
+# Select Database
+def test_select_database(): ...
+
+
+# Store Progress
+def test_store_progress(): ...
+
+
+# Field Forms
+def test_field_forms(): ...
+
+
+# Field Create
+def test_create_field(): ...
+
+
+# Get Field
+def test_get_field(): ...
+
+
+# Field Update
+def test_update_field(): ...
+
+
+# Field Delete
+def test_delete_field(): ...
+
+
+# Finish Database Creation
+def test_finish_database_creation(): ...
+
+
+# Interact With Database
+def test_interact_with_database(): ...
+
+
+###  Optional Sprint Tests ###
+
+
+# test spreadsheet upload
+def test_spreadsheet_upload(): ...
+
+
+# test spreadsheet parse
+def test_spreadsheet_parse(): ...
+
+
+# test parsed spreadsheet to fields
+def test_parsed_spreadsheet_to_fields(): ...
+
+
+# test parsed spreadsheet overview and corrections
+def test_parsed_spreadsheet_overview(): ...
+
+
+def test_parsed_spreadsheet_corrections(): ...
+
+
+# test parsed spreadsheet finalization
+def test_parsed_spreadsheet_finalization(): ...
