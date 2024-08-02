@@ -9,7 +9,6 @@ from POC.db.models.stock_models.db_models import (
 
 import random
 
-
 from datetime import datetime
 
 
