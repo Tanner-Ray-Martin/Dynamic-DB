@@ -4,7 +4,6 @@ from typing import Literal, Optional
 from pydantic import BaseModel
 
 
-
 sqlite_url = "sqlite:///database_db.sqlite3"
 
 DATA_TYPES = Literal[
