@@ -15,9 +15,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
-          python-version: '3.x'  # Ensure the appropriate Python version is used
+          python-version: '3.12'  # Ensure the appropriate Python version is used
       - name: Install dependencies
         run: |
           pip install pre-commit
