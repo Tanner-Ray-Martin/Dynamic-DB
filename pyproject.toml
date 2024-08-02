@@ -58,21 +58,16 @@ exclude = [
 
 # Same as Black.
 line-length = 88
-select = ["E", "F", "W"]
-ignore = ["E501"]
+lint.select = ["E", "F", "W"]
+lint.ignore = ["E501"]
 fix = true
 
-# Assume Python 3.12
-target-version = "py38"
-
 # Allow fix for all enabled rules (when `--fix`) is provided.
-fixable = ["ALL"]
-unfixable = []
+lint.fixable = ["ALL"]
+lint.unfixable = []
 
 # Allow unused variables when underscore-prefixed.
-dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
-
-
+lint.dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
 # Enable auto-formatting of code examples in docstrings. Markdown,
 # reStructuredText code/literal blocks and doctests are all supported.

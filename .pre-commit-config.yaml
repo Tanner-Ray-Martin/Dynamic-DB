@@ -8,16 +8,13 @@ repos:
         args: [ --fix ]
       # Run the formatter.
       - id: ruff-format
-
-
+      
   - repo: local
     hooks:
       - id: re-add
         name: Re-add files modified by hooks
         entry: bash -c 'git add -u'
         language: system
-        stages: [commit, post-commit]
+        stages: [pre-commit, post-commit]
         always_run: true
         pass_filenames: false
-
-

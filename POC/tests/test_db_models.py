@@ -1,13 +1,20 @@
 # POC/tests/test_db_models.py
 
 from datetime import datetime
-from POC.db.models.stock_models.db_models import DbInfo, FieldInfo, DbInfoForm, FieldForm
+from POC.db.models.stock_models.db_models import (
+    DbInfo,
+    FieldInfo,
+    DbInfoForm,
+    FieldForm,
+)
 
 from random import randint
+
 
 def test_db_random():
     n = randint(1, 100)
     assert n >= 0 and n <= 101
+
 
 def test_db_info_initialization():
     db_info = DbInfo(
@@ -16,7 +23,7 @@ def test_db_info_initialization():
         display_name="Test Database Display",
         category="Testing",
         alias="TDB",
-        description="This is a test database."
+        description="This is a test database.",
     )
 
     assert db_info.name == "Test Database"
@@ -29,13 +36,10 @@ def test_db_info_initialization():
     assert isinstance(db_info.created_at, datetime)
     assert isinstance(db_info.updated_at, datetime)
 
+
 def test_field_info_initialization():
     field_info = FieldInfo(
-        name="Test Field",
-        data_type="String",
-        required=True,
-        default="N/A",
-        db_id=1
+        name="Test Field", data_type="String", required=True, default="N/A", db_id=1
     )
 
     assert field_info.name == "Test Field"
@@ -46,6 +50,7 @@ def test_field_info_initialization():
     assert isinstance(field_info.created_at, datetime)
     assert isinstance(field_info.updated_at, datetime)
 
+
 def test_db_info_form_initialization():
     db_info_form = DbInfoForm(
         name="Test Database",
@@ -53,7 +58,7 @@ def test_db_info_form_initialization():
         display_name="Test Database Display",
         category="Testing",
         alias="TDB",
-        description="This is a test database."
+        description="This is a test database.",
     )
 
     assert db_info_form.name == "Test Database"
@@ -63,12 +68,10 @@ def test_db_info_form_initialization():
     assert db_info_form.alias == "TDB"
     assert db_info_form.description == "This is a test database."
 
+
 def test_field_form_initialization():
     field_form = FieldForm(
-        name="Test Field",
-        data_type="String",
-        required=True,
-        default="N/A"
+        name="Test Field", data_type="String", required=True, default="N/A"
     )
 
     assert field_form.name == "Test Field"
