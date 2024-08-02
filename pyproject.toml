@@ -107,3 +107,5 @@ docstring-code-line-length = "dynamic"
 [tool.ruff.lint.isort]
 no-lines-before = ["future", "standard-library"]
 order-by-type = true
+section-order = ["future", "standard-library", "first-party", "local-folder", "third-party"]
+
