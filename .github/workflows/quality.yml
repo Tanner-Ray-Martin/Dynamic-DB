@@ -18,8 +18,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.x'  # Ensure the appropriate Python version is used
-      - name: Install dependencies
-        run: |
-          pip install pre-commit
-      - name: Run pre-commit
-        run: pre-commit run --all-files
+      - name: Install ruff
+        run: pip install ruff
+      - name: Run ruff with --fix
+        run: ruff check . --fix
