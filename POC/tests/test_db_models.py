@@ -3,6 +3,11 @@
 from datetime import datetime
 from POC.db.models.stock_models.db_models import DbInfo, FieldInfo, DbInfoForm, FieldForm
 
+from random import randint
+
+def test_db_random():
+    n = randint(1, 100)
+    assert n >= 0 and n <= 101
 
 def test_db_info_initialization():
     db_info = DbInfo(
