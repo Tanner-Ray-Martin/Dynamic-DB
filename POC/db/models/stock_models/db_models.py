@@ -17,9 +17,7 @@ class DbInfoForm(SQLModel):
         description="The common name for your database",
     )
     short_name: str = Field(
-        title="Database Short Name",
-        description="The Short name for the database.",
-        max_length=10,
+        title="Database Short Name", description="The Short name for the database."
     )
     display_name: str = Field(
         title="Database Display Name",
@@ -46,10 +44,7 @@ class DbInfo(DbInfoForm, table=True):
     status: Optional[str] = Field(default="building", max_length=100)
 
 
-# make a new fieldform the user can fill out to add a new field to the database
-
-
-class FieldForm(SQLModel):
+class FieldInfoForm(SQLModel):
     name: str = Field(
         title="Field Name",
         description="The name of the field in the database",
@@ -68,9 +63,9 @@ class FieldForm(SQLModel):
     )
 
 
-class FieldInfo(FieldForm, table=True):
-    id: int = Field(primary_key=True)
-    db_id: int
+class FieldInfo(FieldInfoForm, table=True):
+    id: int = Field(default=None, primary_key=True)
+    db_id: int = Field(default=None)
     created_at: datetime = Field(default=datetime.now())
     updated_at: datetime = Field(default=datetime.now())
 

@@ -11,11 +11,11 @@ from sqlmodel import Session
 from POC.db.database import User, engine
 from POC.db.models.stock_models.db_models import (
     DbInfoForm,
-    FieldForm,
+    DbInfo,
+    FieldInfoForm,
+    FieldInfo,
     AddFieldForm,
     db_engine,
-    DbInfo,
-    FieldInfo,
 )
 
 
@@ -95,29 +95,6 @@ async def create_new_database():
     ]
 
 
-@app.get(
-    "/api/forms/create/databaseField/{database_id}",
-    response_model=FastUI,
-    response_model_exclude_none=True,
-    include_in_schema=False,
-)
-async def create_new_database_field(database_id: int):
-    print("database_id", database_id)
-    return [
-        c.Heading(
-            text="New Field Info.",
-            level=3,
-            class_name="text-center",
-        ),
-        c.ModelForm(
-            display_mode="default",
-            loading=[c.Text(text="Submitting")],
-            model=FieldForm,
-            submit_url=f"/api/forms/create/databaseField/{database_id}",
-        ),
-    ]
-
-
 @app.post(
     "/api/forms/create/database",
     response_model=FastUI,
@@ -132,11 +109,46 @@ async def create_database(form: Annotated[DbInfoForm, fastui_form(DbInfoForm)]):
         database_id = db.id  # Get the newly created database id
     return [
         c.Text(text="Database Info Created!"),
+        # make a simple view of the db info
+        c.Heading(text="Database Info", level=3),
+        c.Paragraph(text=f"Name: {db.name}"),
+        c.Paragraph(text=f"Description: {db.description}"),
+        c.Paragraph(text=f"Category: {db.category}"),
+        c.Paragraph(text=f"Id: {db.id}"),
+        c.Paragraph(text=f"Updated: {db.updated_at}"),
+        c.Paragraph(text=f"Created: {db.created_at}"),
+        c.Paragraph(text=f"Status: {db.status}"),
+        c.Heading(
+            text="New Field Info.",
+            level=3,
+            class_name="text-center",
+        ),
         c.Markdown(text="---"),
         c.ModelForm(
             loading=[c.Text(text="Submitting")],
             model=AddFieldForm,
             method="GET",
+            submit_url=f"/api/forms/create/databaseField/{database_id}",
+        ),
+    ]
+
+
+@app.get(
+    "/api/forms/create/databaseField/{database_id}",
+    response_model=FastUI,
+    response_model_exclude_none=True,
+    include_in_schema=False,
+)
+async def create_new_database_field(database_id: int):
+    return [
+        c.Heading(
+            text="New Field Info.",
+            level=3,
+            class_name="text-center",
+        ),
+        c.ModelForm(
+            loading=[c.Text(text="Submitting")],
+            model=FieldInfoForm,
             submit_url=f"/api/forms/create/databaseField/{database_id}",
         ),
     ]
@@ -149,15 +161,22 @@ async def create_database(form: Annotated[DbInfoForm, fastui_form(DbInfoForm)]):
     include_in_schema=False,
 )
 async def create_database_field(
-    form: Annotated[FieldForm, fastui_form(FieldForm)], database_id: int
+    form: Annotated[FieldInfoForm, fastui_form(FieldInfoForm)], database_id: int
 ):
     with Session(db_engine) as session:
-        field = FieldInfo(**form.model_dump(), db_id=database_id)
-        session.add(field)
+        db = FieldInfo(**form.model_dump(), db_id=database_id)
+        session.add(db)
         session.commit()
+        session.refresh(db)
+
     return [
         c.Text(text="Field Info Created!"),
         c.Markdown(text="---"),
+        c.Paragraph(text="New Field Info."),
+        c.Paragraph(text=f"Name: {db.name}"),
+        c.Paragraph(text=f"Data Type: {db.data_type}"),
+        c.Paragraph(text=f"Required: {db.required}"),
+        c.Paragraph(text=f"Default: {db.default}"),
         c.ModelForm(
             loading=[c.Text(text="Submitting")],
             model=AddFieldForm,
@@ -181,3 +200,9 @@ async def home_redirect() -> RedirectResponse:
 async def html_landing() -> HTMLResponse:
     """Simple HTML page which serves the React app, comes last as it matches all paths."""
     return HTMLResponse(prebuilt_html(title="FastUI Demo"))
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(app, reload=True)
