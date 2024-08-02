@@ -11,5 +11,6 @@ repos:
         name: Re-add files modified by hooks
         entry: bash -c 'git add -u'
         language: system
+        stages: [commit, push]
         always_run: true
         pass_filenames: false

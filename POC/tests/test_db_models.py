@@ -4,7 +4,6 @@ from datetime import datetime
 from POC.db.models.stock_models.db_models import DbInfo, FieldInfo, DbInfoForm, FieldForm
 
 
-
 def test_db_info_initialization():
     db_info = DbInfo(
         name="Test Database",
