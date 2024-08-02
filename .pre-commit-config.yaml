@@ -1,9 +1,14 @@
 repos:
-  - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.0.212  # Use the latest stable version
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    # Ruff version.
+    rev: v0.5.5
     hooks:
+      # Run the linter.
       - id: ruff
-        args: ["--fix"]
+        args: [ --fix ]
+      # Run the formatter.
+      - id: ruff-format
+
 
   - repo: local
     hooks:
@@ -14,3 +19,5 @@ repos:
         stages: [commit, post-commit]
         always_run: true
         pass_filenames: false
+
+
