@@ -3,8 +3,9 @@ repos:
     rev: v0.5.5  # Use the latest stable version
     hooks:
       - id: ruff
-        args: ["--fix", "--exit-zero"]
+        args: ["check", "--select", "I", "--fix"]
       - id: ruff-format
+
       
   - repo: local
     hooks:

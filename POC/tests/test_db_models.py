@@ -1,12 +1,13 @@
 # POC/tests/test_db_models.py
+from datetime import datetime
+from random import randint
+
 from POC.db.models.stock_models.db_models import (
     DbInfo,
-    FieldInfo,
     DbInfoForm,
     FieldForm,
+    FieldInfo,
 )
-from random import randint
-from datetime import datetime
 
 
 def test_db_random():
