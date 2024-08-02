@@ -1,6 +1,6 @@
 # POC/tests/test_db_models.py
+import random
 from datetime import datetime
-from random import randint
 
 from POC.db.models.stock_models.db_models import (
     DbInfo,
@@ -11,7 +11,7 @@ from POC.db.models.stock_models.db_models import (
 
 
 def test_db_random():
-    n = randint(1, 100)
+    n = random.randint(1, 100)
     assert n >= 0 and n <= 101
 
 
