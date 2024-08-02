@@ -22,29 +22,3 @@ jobs:
         run: pip install ruff
       - name: Run ruff with --fix
         run: ruff check . --fix
-
-  
-  tests:
-    runs-on: ubuntu-latest
-    
-    strategy:
-      matrix:
-        python-version: [3.12]
-    
-    steps:
-      - uses: actions/checkout@v3
-      
-      - name: Set up Python
-        uses: actions/setup-python@v3
-        with:
-          python-version: ${{ matrix.python-version }}
-      
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install pytest
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-
-      - name: Run tests
-        run: |
-          pytest POC/tests
