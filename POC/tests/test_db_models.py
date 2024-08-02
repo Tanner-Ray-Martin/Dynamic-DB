@@ -5,7 +5,6 @@ from POC.db.models.stock_models.db_models import DbInfo, FieldInfo, DbInfoForm, 
 
 
 
-
 def test_db_info_initialization():
     db_info = DbInfo(
         name="Test Database",
