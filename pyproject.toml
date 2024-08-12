@@ -23,7 +23,7 @@ poc = "uvicorn POC.api.main:app --reload"
 [tool.pixi.dependencies]
 sqlmodel = ">=0.0.19,<0.1"
 fastui = ">=0.6.0,<0.7"
-ruff = ">=0.5,<0.6"
+ruff = ">=0.5.,<0.6"
 
 [tool.ruff]
 # Exclude a variety of commonly ignored directories.
