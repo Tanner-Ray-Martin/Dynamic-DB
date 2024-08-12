@@ -9,3 +9,4 @@ repos:
     rev: v1.11.1
     hooks:
     -   id: mypy
+        args: [--check-untyped-defs, --strict, --python-executable, .pixi/envs/default/python]

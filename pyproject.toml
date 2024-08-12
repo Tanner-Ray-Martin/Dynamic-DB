@@ -19,11 +19,16 @@ Dynamic-DB = { path = ".", editable = true }
 
 [tool.pixi.tasks]
 poc = "uvicorn POC.api.main:app --reload"
+test_pre_commit = "pre-commit run --all-files"
+test_poc_mypy = "mypy POC --check-untyped-defs"
 
 [tool.pixi.dependencies]
-sqlmodel = ">=0.0.19,<0.1"
 fastui = ">=0.6.0,<0.7"
-ruff = ">=0.5.,<0.6"
+ruff = ">=0.5,<0.6"
+pre-commit = ">=3.8.0,<3.9"
+sqlmodel = ">=0.0.21,<0.1"
+pytest = ">=8.3.2,<8.4"
+mypy = ">=1.11.1,<1.12"
 
 [tool.ruff]
 # Exclude a variety of commonly ignored directories.

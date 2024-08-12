@@ -12,12 +12,12 @@ import random
 from datetime import datetime
 
 
-def test_db_random():
+def test_db_random() -> None:
     n = random.randint(1, 100)
     assert n >= 0 and n <= 101
 
 
-def test_db_info_form_initialization():
+def test_db_info_form_initialization() -> None:
     db_info_form = DbInfoForm(
         name="Test Database",
         short_name="TestDB",
@@ -35,7 +35,7 @@ def test_db_info_form_initialization():
     assert db_info_form.description == "This is a test database."
 
 
-def test_db_info_initialization():
+def test_db_info_initialization() -> None:
     db_info = DbInfo(
         name="Test Database",
         short_name="TestDB",
@@ -56,7 +56,7 @@ def test_db_info_initialization():
     assert isinstance(db_info.updated_at, datetime)
 
 
-def test_field_form_initialization():
+def test_field_form_initialization() -> None:
     field_form = FieldInfoForm(
         name="Test Field", data_type="String", required=True, default="N/A"
     )
@@ -67,7 +67,7 @@ def test_field_form_initialization():
     assert field_form.default == "N/A"
 
 
-def test_field_info_initialization():
+def test_field_info_initialization() -> None:
     field_info = FieldInfo(
         name="Test Field", data_type="String", required=True, default="N/A", db_id=1
     )

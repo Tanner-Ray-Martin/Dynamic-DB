@@ -2,7 +2,7 @@ from typing import Annotated, Sequence
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse, RedirectResponse
 from starlette.routing import Route
-from fastui import FastUI, prebuilt_html, components as c
+from fastui import FastUI, prebuilt_html, components as c, AnyComponent
 from fastui.events import GoToEvent
 from fastui.forms import fastui_form
 from sqlmodel import Session, select
@@ -51,7 +51,7 @@ class MyTestModel(BaseModel):
 app = FastAPI()
 
 
-def get_success_button():
+def get_success_button() -> list[AnyComponent]:
     return [
         c.Page(
             components=[
@@ -72,7 +72,7 @@ def get_success_button():
     include_in_schema=False,
     tags=["test"],
 )
-async def display_test_model():
+async def display_test_model() -> list[AnyComponent]:
     my_test_model = MyTestModel(dob_dt=dt.now())  # name="Hello")
     # my_test_model = MyTestModel(**my_test_model.model_dump())
     # my_test_model.dob = date(2024, 3, 28)
@@ -100,7 +100,7 @@ async def display_test_model():
     response_model_exclude_none=True,
     include_in_schema=False,
 )
-async def create_new_database():
+async def create_new_database() -> list[AnyComponent]:
     return [
         c.Page(
             components=[
@@ -136,7 +136,9 @@ async def create_new_database():
     response_model_exclude_none=True,
     include_in_schema=False,
 )
-async def submit_database_form(form: Annotated[DbInfoForm, fastui_form(DbInfoForm)]):
+async def submit_database_form(
+    form: Annotated[DbInfoForm, fastui_form(DbInfoForm)],
+) -> list[AnyComponent]:
     with Session(db_engine) as session:
         db = DbInfo(**form.model_dump())
         session.add(db)
@@ -171,7 +173,7 @@ async def submit_database_form(form: Annotated[DbInfoForm, fastui_form(DbInfoFor
     response_model_exclude_none=True,
     tags=["Database"],
 )
-async def api_create_database(new_db: DbInfoForm):
+async def api_create_database(new_db: DbInfoForm) -> DbInfo:
     with Session(db_engine) as session:
         db = DbInfo(**new_db.model_dump())
         session.add(db)
@@ -186,7 +188,7 @@ async def api_create_database(new_db: DbInfoForm):
     response_model_exclude_none=True,
     include_in_schema=False,
 )
-async def display_database(database_id: int):
+async def display_database(database_id: int) -> list[AnyComponent]:
     with Session(db_engine) as session:
         statement = select(DbInfo).where(DbInfo.id == database_id)
         db: DbInfo | None = session.exec(statement).first()
@@ -246,7 +248,7 @@ async def api_get_database(database_id: int) -> DbInfo:
     response_model_exclude_none=True,
     include_in_schema=False,
 )
-async def display_all_databases():
+async def display_all_databases() -> list[AnyComponent]:
     with Session(db_engine) as session:
         # statement = select(DbInfo).where(DbInfo.status != "deleted")
         statement = select(DbInfo)
@@ -292,7 +294,7 @@ async def api_get_all_databases() -> Sequence[DbInfo]:
     response_model_exclude_none=True,
     include_in_schema=False,
 )
-async def get_update_database_form(database_id: int):
+async def get_update_database_form(database_id: int) -> list[AnyComponent]:
     with Session(db_engine) as session:
         statement = select(DbInfo).where(DbInfo.id == database_id)
         db: DbInfo | None = session.exec(statement).first()
@@ -329,7 +331,7 @@ async def get_update_database_form(database_id: int):
 )
 async def submit_update_database_form(
     database_id: int, form: Annotated[DbInfoForm, fastui_form(DbInfoForm)]
-):
+) -> list[AnyComponent]:
     with Session(db_engine) as session:
         statement = select(DbInfo).where(DbInfo.id == database_id)
         db: DbInfo | None = session.exec(statement).first()
@@ -364,7 +366,7 @@ async def submit_update_database_form(
     response_model_exclude_none=True,
     tags=["Database"],
 )
-async def api_update_database(database_id: int, db: DbInfoForm):
+async def api_update_database(database_id: int, db: DbInfoForm) -> DbInfo:
     with Session(db_engine) as session:
         statement = select(DbInfo).where(DbInfo.id == database_id)
         old_db: DbInfo | None = session.exec(statement).first()
@@ -385,7 +387,7 @@ async def api_update_database(database_id: int, db: DbInfoForm):
     response_model=DbInfo,
     tags=["Database"],
 )
-async def api_delete_database(database_id: int):
+async def api_delete_database(database_id: int) -> DbInfo:
     with Session(db_engine) as session:
         statement = select(DbInfo).where(DbInfo.id == database_id)
         db: DbInfo | None = session.exec(statement).first()
@@ -407,7 +409,7 @@ async def api_delete_database(database_id: int):
     response_model_exclude_none=True,
     include_in_schema=False,
 )
-async def get_field_form(database_id: int):
+async def get_field_form(database_id: int) -> list[AnyComponent]:
     return [
         c.ModelForm(
             loading=[c.Text(text="Submitting")],
@@ -425,7 +427,7 @@ async def get_field_form(database_id: int):
 )
 async def submit_field_form(
     field_form: Annotated[FieldInfoForm, fastui_form(FieldInfoForm)], database_id: int
-):
+) -> list[AnyComponent]:
     with Session(db_engine) as session:
         db_field = FieldInfo(**field_form.model_dump(), db_id=database_id)
         session.add(db_field)
@@ -457,7 +459,7 @@ async def submit_field_form(
     response_model_exclude_none=True,
     tags=["Field"],
 )
-async def api_create_field(form: FieldInfoForm, database_id: int):
+async def api_create_field(form: FieldInfoForm, database_id: int) -> FieldInfo:
     with Session(db_engine) as session:
         db = FieldInfo(**form.model_dump(), db_id=database_id)
         session.add(db)
@@ -518,7 +520,9 @@ async def api_get_fields(database_id: int) -> Sequence[FieldInfo]:
     response_model_exclude_none=True,
     tags=["Field"],
 )
-async def api_update_field(database_id: int, field_id: int, db: FieldInfoForm):
+async def api_update_field(
+    database_id: int, field_id: int, db: FieldInfoForm
+) -> FieldInfo:
     with Session(db_engine) as session:
         statement = select(FieldInfo).where(
             FieldInfo.id == field_id and FieldInfo.db_id == database_id
@@ -543,7 +547,7 @@ async def api_update_field(database_id: int, field_id: int, db: FieldInfoForm):
     response_model=FieldInfo,
     tags=["Field"],
 )
-async def api_delete_field(database_id: int, field_id: int):
+async def api_delete_field(database_id: int, field_id: int) -> FieldInfo:
     with Session(db_engine) as session:
         statement = select(FieldInfo).where(
             FieldInfo.id == field_id and FieldInfo.db_id == database_id
@@ -587,7 +591,7 @@ async def api_delete_fields(database_id: int) -> Sequence[FieldInfo]:
     response_model_exclude_none=True,
     include_in_schema=False,
 )
-async def welcome():
+async def welcome() -> list[AnyComponent]:
     form_routes: list[Route] = [
         route
         for route in app.routes

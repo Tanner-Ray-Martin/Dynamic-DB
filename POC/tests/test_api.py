@@ -8,6 +8,7 @@ from POC.db.models.stock_models.db_models import (
     FieldInfo,
     MethodNotAllowedResponse,
 )
+
 import pytest
 
 
@@ -41,12 +42,12 @@ def db_field_form() -> FieldInfoForm:
 
 
 @pytest.fixture
-def frontend_url():
+def frontend_url() -> str:
     return "/api/forms/"
 
 
 @pytest.fixture
-def backend_url():
+def backend_url() -> str:
     return "/api/backend/"
 
 
@@ -59,7 +60,9 @@ def backend_url():
         ("create/databaseField/does/not/exist", 400, JSONDecodeError),
     ],
 )
-def test_create_new_database(frontend_url, url, expected_status, expected_response):
+def test_create_new_database(
+    frontend_url: str, url: str, expected_status: int, expected_response: type
+) -> None:
     if expected_status == 200:
         response = client.get(f"{frontend_url}{url}")
         data = response.json()
@@ -78,8 +81,12 @@ def test_create_new_database(frontend_url, url, expected_status, expected_respon
     ],
 )
 def test_create_database(
-    db_info_form: DbInfoForm, frontend_url, url, expected_status, expected_response
-):
+    db_info_form: DbInfoForm,
+    frontend_url: str,
+    url: str,
+    expected_status: int,
+    expected_response: type,
+) -> None:
     response = client.post(f"{frontend_url}{url}", data=db_info_form.model_dump())
     assert response.status_code == expected_status
     data = response.json()
@@ -94,8 +101,12 @@ def test_create_database(
     ],
 )
 def test_create_database_field(
-    db_field_form: FieldInfoForm, frontend_url, url, expected_status, expected_response
-):
+    db_field_form: FieldInfoForm,
+    frontend_url: str,
+    url: str,
+    expected_status: int,
+    expected_response: type,
+) -> None:
     response = client.post(f"{frontend_url}{url}", data=db_field_form.model_dump())
     assert response.status_code == expected_status
     data = response.json()
@@ -113,7 +124,9 @@ def test_create_database_field(
         ("read/databaseField/does/not/exist", 400, JSONDecodeError),
     ],
 )
-def test_list_databases(backend_url, url, expected_status, expected_response):
+def test_list_databases(
+    backend_url: str, url: str, expected_status: int, expected_response: type
+) -> None:
     if expected_status == 200:
         response = client.get(f"{backend_url}{url}")
         data = response.json()
@@ -132,8 +145,12 @@ def test_list_databases(backend_url, url, expected_status, expected_response):
     ],
 )
 def test_update_database(
-    db_info_form: DbInfoForm, backend_url, url, expected_status, expected_response
-):
+    db_info_form: DbInfoForm,
+    backend_url: str,
+    url: str,
+    expected_status: int,
+    expected_response: type,
+) -> None:
     response = client.put(f"{backend_url}{url}", json=db_info_form.model_dump())
     assert response.status_code == expected_status
     data = response.json()
@@ -148,8 +165,12 @@ def test_update_database(
     ],
 )
 def test_update_database_field(
-    db_field_form: FieldInfoForm, backend_url, url, expected_status, expected_response
-):
+    db_field_form: FieldInfoForm,
+    backend_url: str,
+    url: str,
+    expected_status: int,
+    expected_response: type,
+) -> None:
     response = client.put(f"{backend_url}{url}", json=db_field_form.model_dump())
     assert response.status_code == expected_status
     data = response.json()

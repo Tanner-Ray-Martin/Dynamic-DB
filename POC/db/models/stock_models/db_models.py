@@ -1,4 +1,6 @@
+from __future__ import annotations
 from sqlmodel import SQLModel, Field, create_engine
+
 from datetime import datetime as dt, timedelta, date
 from typing import Literal, Optional, Any
 from pydantic import (
@@ -137,3 +139,5 @@ class MethodNotAllowedResponse(BaseModel):
 db_engine = create_engine(sqlite_url, echo=True)
 
 SQLModel.metadata.create_all(db_engine)
+
+name = "Test Database"
