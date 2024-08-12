@@ -1,10 +1,21 @@
 from sqlmodel import SQLModel, Field, create_engine
-from datetime import datetime
-from typing import Literal, Optional
-from pydantic import BaseModel
+from datetime import datetime as dt, timedelta, date
+from typing import Literal, Optional, Any
+from pydantic import (
+    BaseModel,
+    # field_validator,
+    # ValidationInfo,
+    model_validator,
+    # field_serializer,
+    # ValidatorFunctionWrapHandler,
+)
+from typing_extensions import Self  # Annotated
+# from pydantic.functional_validators import WrapValidator
 
-
-sqlite_url = "sqlite:///database_db.sqlite3"
+NOW: dt = dt.now() - timedelta(hours=8)
+TODAY: date = NOW.date()
+TODAY_STR = TODAY.strftime("%Y-%m-%d")
+sqlite_url = f"sqlite:///database_db_{TODAY_STR}.sqlite3"
 
 DATA_TYPES = Literal[
     "str", "int", "float", "bool", "date", "datetime", "time", "json", "list", "dict"
@@ -39,9 +50,53 @@ class DbInfoForm(SQLModel):
 
 class DbInfo(DbInfoForm, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    created_at: datetime = Field(default=datetime.now())
-    updated_at: datetime = Field(default=datetime.now())
+    created_at: dt = Field(default=dt.now())
+    updated_at: dt = Field(default_factory=dt.now)
     status: Optional[str] = Field(default="building", max_length=100)
+
+
+class DbInfoDisplay(BaseModel):
+    id: int
+    created_at: dt
+    updated_at: dt
+    status: Optional[str]
+    name: str
+    short_name: str
+    display_name: str
+    category: Optional[str]
+    alias: str
+    description: Optional[str]
+
+    @model_validator(mode="before")
+    @classmethod
+    def remove_ms_from_dt(cls, data: Any) -> Any:
+        if isinstance(data, dict):
+            for field_name, field_value in data.items():
+                if isinstance(field_value, dt):
+                    data.update({field_name: field_value.replace(microsecond=0)})
+            else:
+                assert isinstance(data, dict)
+        return data
+
+    @model_validator(mode="after")
+    def remove_microseconds_from_datetime(self) -> Self:
+        for field_name, field_value in self.__dict__.items():
+            if isinstance(field_value, dt):
+                setattr(self, field_name, field_value.replace(microsecond=0))
+        return self
+
+
+class TDBInfo(BaseModel):
+    name: str
+    short_name: str
+    display_name: str
+    category: str = ""
+    alias: str = ""
+    description: str = ""
+    id: int
+    created_at: dt
+    updated_at: dt
+    status: str | None = None
 
 
 class FieldInfoForm(SQLModel):
@@ -66,11 +121,16 @@ class FieldInfoForm(SQLModel):
 class FieldInfo(FieldInfoForm, table=True):
     id: int = Field(default=None, primary_key=True)
     db_id: int = Field(default=None)
-    created_at: datetime = Field(default=datetime.now())
-    updated_at: datetime = Field(default=datetime.now())
+    created_at: dt = Field(default=dt.now())
+    updated_at: dt = Field(default=dt.now())
+    is_active: bool = Field(default=True)
 
 
 class AddFieldForm(BaseModel): ...
+
+
+class MethodNotAllowedResponse(BaseModel):
+    detail: str = "Method Not Allowed"
 
 
 # create the engine
