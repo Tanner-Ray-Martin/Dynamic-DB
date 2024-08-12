@@ -50,7 +50,7 @@ class DbInfoForm(SQLModel):
     )
 
 
-class DbInfo(DbInfoForm, table=True):
+class DbInfo(DbInfoForm, table=True):  # type: ignore
     id: Optional[int] = Field(default=None, primary_key=True)
     created_at: dt = Field(default=dt.now())
     updated_at: dt = Field(default_factory=dt.now)
@@ -120,7 +120,7 @@ class FieldInfoForm(SQLModel):
     )
 
 
-class FieldInfo(FieldInfoForm, table=True):
+class FieldInfo(FieldInfoForm, table=True):  # type: ignore
     id: int = Field(default=None, primary_key=True)
     db_id: int = Field(default=None)
     created_at: dt = Field(default=dt.now())

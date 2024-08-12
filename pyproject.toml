@@ -20,7 +20,7 @@ Dynamic-DB = { path = ".", editable = true }
 [tool.pixi.tasks]
 poc = "uvicorn POC.api.main:app --reload"
 test_pre_commit = "pre-commit run --all-files"
-test_poc_mypy = "pixi run mypy POC --check-untyped-defs --strict"
+test_poc_mypy = "mypy --check-untyped-defs --strict"
 
 [tool.pixi.dependencies]
 fastui = ">=0.6.0,<0.7"
