@@ -24,7 +24,7 @@ jobs:
       - name: Run pre-commit
         run: pre-commit run --all-files
 
-
+  #this makes sure that type annotations meet criteria
   mypy:
     runs-on: ubuntu-latest
     steps:
