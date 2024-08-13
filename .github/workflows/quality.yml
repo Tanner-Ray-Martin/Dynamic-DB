@@ -43,4 +43,3 @@ jobs:
         run: pip install mypy
       - name: Run mypy
         run: mypy POC --check-untyped-defs --ignore-missing-imports
-           # NOTE: this needs to be the same as the job name
