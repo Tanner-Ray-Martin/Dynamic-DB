@@ -18,9 +18,9 @@ platforms = ["win-64"]
 Dynamic-DB = { path = ".", editable = true }
 
 [tool.pixi.tasks]
-poc = "uvicorn POC.api.main:app --reload"
-test_pre_commit = "pre-commit run --all-files"
-test_poc_mypy = "mypy --check-untyped-defs --strict"
+poc = "uvicorn POC.api.main:app"
+pre_commit = "pre-commit run --all-files"
+mypy_poc = "mypy POC --check-untyped-defs --ignore-missing-imports"
 
 [tool.pixi.dependencies]
 fastui = ">=0.6.0,<0.7"
@@ -29,6 +29,21 @@ pre-commit = ">=3.8.0,<3.9"
 sqlmodel = ">=0.0.21,<0.1"
 pytest = ">=8.3.2,<8.4"
 mypy = ">=1.11.1,<1.12"
+
+[tool.pixi.feature.test.tasks]
+test = "pytest"
+pre_commit = "pre-commit run --all-files"
+mypy_poc = "mypy POC --check-untyped-defs --ignore-missing-imports"
+
+[tool.pixi.feature.format.tasks]
+format = "ruff"
+check = "ruff check"
+fix = "ruff check --fix"
+
+[tool.pixi.environments]
+default = { solve-group = "default" }
+test = { features = ["test"], solve-group = "default" }
+format = { features = ["format"], solve-group = "default" }
 
 [tool.ruff]
 # Exclude a variety of commonly ignored directories.
