@@ -11,7 +11,6 @@ from pydantic import (
     # field_serializer,
     # ValidatorFunctionWrapHandler,
 )
-from typing_extensions import Self  # Annotated
 # from pydantic.functional_validators import WrapValidator
 
 NOW: dt = dt.now() - timedelta(hours=8)
@@ -50,24 +49,11 @@ class DbInfoForm(SQLModel):
     )
 
 
-class DbInfo(DbInfoForm, table=True):  # type: ignore
+class DbInfo(DbInfoForm):  # type: ignore
     id: Optional[int] = Field(default=None, primary_key=True)
     created_at: dt = Field(default=dt.now())
     updated_at: dt = Field(default_factory=dt.now)
     status: Optional[str] = Field(default="building", max_length=100)
-
-
-class DbInfoDisplay(BaseModel):
-    id: int
-    created_at: dt
-    updated_at: dt
-    status: Optional[str]
-    name: str
-    short_name: str
-    display_name: str
-    category: Optional[str]
-    alias: str
-    description: Optional[str]
 
     @model_validator(mode="before")
     @classmethod
@@ -80,12 +66,9 @@ class DbInfoDisplay(BaseModel):
                 assert isinstance(data, dict)
         return data
 
-    @model_validator(mode="after")
-    def remove_microseconds_from_datetime(self) -> Self:
-        for field_name, field_value in self.__dict__.items():
-            if isinstance(field_value, dt):
-                setattr(self, field_name, field_value.replace(microsecond=0))
-        return self
+
+class DbInfoModel(DbInfo, table=True):  # type: ignore
+    ...
 
 
 class TDBInfo(BaseModel):
@@ -120,12 +103,16 @@ class FieldInfoForm(SQLModel):
     )
 
 
-class FieldInfo(FieldInfoForm, table=True):  # type: ignore
+class FieldInfo(FieldInfoForm):
     id: int = Field(default=None, primary_key=True)
     db_id: int = Field(default=None)
     created_at: dt = Field(default=dt.now())
     updated_at: dt = Field(default=dt.now())
     is_active: bool = Field(default=True)
+
+
+class FieldInfoModel(FieldInfo, table=True):  # type: ignore
+    ...
 
 
 class AddFieldForm(BaseModel): ...
