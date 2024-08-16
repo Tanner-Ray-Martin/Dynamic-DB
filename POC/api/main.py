@@ -9,10 +9,11 @@ from sqlmodel import Session, select
 from POC.db.models.stock_models.db_models import (
     DbInfoForm,
     DbInfo,
+    DbInfoModel,
     FieldInfoForm,
     FieldInfo,
+    FieldInfoModel,
     AddFieldForm,
-    DbInfoDisplay,
     db_engine,
 )
 import logging
@@ -140,7 +141,8 @@ async def submit_database_form(
     form: Annotated[DbInfoForm, fastui_form(DbInfoForm)],
 ) -> list[AnyComponent]:
     with Session(db_engine) as session:
-        db = DbInfo(**form.model_dump())
+        db_info = DbInfo(**form.model_dump())
+        db = DbInfoModel(**db_info.model_dump())
         session.add(db)
         session.commit()
         database_id = db.id  # Get the newly created database id
@@ -169,13 +171,14 @@ async def submit_database_form(
 
 @app.post(
     "/api/backend/create/database",
-    response_model=DbInfo,
+    response_model=DbInfoModel,
     response_model_exclude_none=True,
     tags=["Database"],
 )
-async def api_create_database(new_db: DbInfoForm) -> DbInfo:
+async def api_create_database(new_db: DbInfoForm) -> DbInfoModel:
     with Session(db_engine) as session:
-        db = DbInfo(**new_db.model_dump())
+        db_info = DbInfo(**new_db.model_dump())
+        db = DbInfoModel(**db_info.model_dump())
         session.add(db)
         session.commit()
         session.refresh(db)
@@ -190,12 +193,10 @@ async def api_create_database(new_db: DbInfoForm) -> DbInfo:
 )
 async def display_database(database_id: int) -> list[AnyComponent]:
     with Session(db_engine) as session:
-        statement = select(DbInfo).where(DbInfo.id == database_id)
-        db: DbInfo | None = session.exec(statement).first()
+        statement = select(DbInfoModel).where(DbInfoModel.id == database_id)
+        db: DbInfoModel | None = session.exec(statement).first()
         if db is None:
             raise HTTPException(status_code=404, detail="Database not found")
-
-        display_db = DbInfoDisplay(**db.model_dump())
 
     return [
         c.Page(
@@ -203,7 +204,7 @@ async def display_database(database_id: int) -> list[AnyComponent]:
                 c.Div(
                     components=[
                         c.Heading(
-                            text=f"Database: {display_db.display_name}",
+                            text=f"Database: {db.display_name}",
                             level=3,
                             class_name="text-center",
                         ),
@@ -216,8 +217,8 @@ async def display_database(database_id: int) -> list[AnyComponent]:
                         c.ModelForm(
                             submit_url="/forms/read/database",
                             display_mode="inline",
-                            initial=display_db.model_dump(mode="json"),  # mode="json"),
-                            model=DbInfoDisplay,
+                            initial=db.model_dump(mode="json"),  # mode="json"),
+                            model=DbInfoModel,
                         ),
                     ]
                 ),
@@ -228,14 +229,14 @@ async def display_database(database_id: int) -> list[AnyComponent]:
 
 @app.get(
     "/api/backend/read/database/{database_id}",
-    response_model=DbInfo,
+    response_model=DbInfoModel,
     tags=["Database"],
 )
-async def api_get_database(database_id: int) -> DbInfo:
+async def api_get_database(database_id: int) -> DbInfoModel:
     with Session(db_engine) as session:
-        # db: DbInfo = session.query(DbInfo).filter(DbInfo.id == database_id).first()
-        statement = select(DbInfo).where(DbInfo.id == database_id)
-        db: DbInfo | None = session.exec(statement).first()
+        # db: DbInfoModel = session.query(DbInfoModel).filter(DbInfoModel.id == database_id).first()
+        statement = select(DbInfoModel).where(DbInfoModel.id == database_id)
+        db: DbInfoModel | None = session.exec(statement).first()
         if db is None:
             raise HTTPException(status_code=404, detail="Database not found")
 
@@ -250,9 +251,9 @@ async def api_get_database(database_id: int) -> DbInfo:
 )
 async def display_all_databases() -> list[AnyComponent]:
     with Session(db_engine) as session:
-        # statement = select(DbInfo).where(DbInfo.status != "deleted")
-        statement = select(DbInfo)
-        dbs: Sequence[DbInfo] = session.exec(statement).all()
+        # statement = select(DbInfoModel).where(DbInfoModel.status != "deleted")
+        statement = select(DbInfoModel)
+        dbs: Sequence[DbInfoModel] = session.exec(statement).all()
 
     return [
         c.Page(
@@ -276,14 +277,14 @@ async def display_all_databases() -> list[AnyComponent]:
 
 @app.get(
     "/api/backend/read/database",
-    response_model=Sequence[DbInfo],
+    response_model=Sequence[DbInfoModel],
     tags=["Database"],
 )
-async def api_get_all_databases() -> Sequence[DbInfo]:
+async def api_get_all_databases() -> Sequence[DbInfoModel]:
     with Session(db_engine) as session:
-        # statement = select(DbInfo).where(DbInfo.status != "deleted")
-        statement = select(DbInfo)
-        dbs: Sequence[DbInfo] = session.exec(statement).all()
+        # statement = select(DbInfoModel).where(DbInfoModel.status != "deleted")
+        statement = select(DbInfoModel)
+        dbs: Sequence[DbInfoModel] = session.exec(statement).all()
 
     return dbs
 
@@ -296,12 +297,12 @@ async def api_get_all_databases() -> Sequence[DbInfo]:
 )
 async def get_update_database_form(database_id: int) -> list[AnyComponent]:
     with Session(db_engine) as session:
-        statement = select(DbInfo).where(DbInfo.id == database_id)
-        db: DbInfo | None = session.exec(statement).first()
+        statement = select(DbInfoModel).where(DbInfoModel.id == database_id)
+        db: DbInfoModel | None = session.exec(statement).first()
         if db is None:
             raise HTTPException(status_code=404, detail="Database not found")
         if db is not None:
-            db_info: DbInfoForm = DbInfoForm(**db.model_dump())
+            db_info_form: DbInfoForm = DbInfoForm(**db.model_dump())
 
     return [
         c.Page(
@@ -311,7 +312,7 @@ async def get_update_database_form(database_id: int) -> list[AnyComponent]:
                         c.Markdown(text="---"),
                         c.ModelForm(
                             submit_url=f"/api/forms/update/database/{database_id}",
-                            initial=db_info.model_dump(),
+                            initial=db_info_form.model_dump(),
                             loading=[c.Text(text="Submitting")],
                             model=DbInfoForm,
                         ),
@@ -333,16 +334,18 @@ async def submit_update_database_form(
     database_id: int, form: Annotated[DbInfoForm, fastui_form(DbInfoForm)]
 ) -> list[AnyComponent]:
     with Session(db_engine) as session:
-        statement = select(DbInfo).where(DbInfo.id == database_id)
-        db: DbInfo | None = session.exec(statement).first()
+        statement = select(DbInfoModel).where(DbInfoModel.id == database_id)
+        db: DbInfoModel | None = session.exec(statement).first()
         if db is None:
             raise HTTPException(status_code=404, detail="Database not found")
-        db.short_name = form.short_name
-        db.display_name = form.display_name
-        db.category = form.category
-        db.alias = form.alias
-        db.description = form.description
-        db.updated_at = dt.now()
+        db_info: DbInfo = DbInfo(**form.model_dump())
+
+        db.short_name = db_info.short_name
+        db.display_name = db_info.display_name
+        db.category = db_info.category
+        db.alias = db_info.alias
+        db.description = db_info.description
+        db.updated_at = db_info.updated_at
         session.add(db)
         session.commit()
         session.refresh(db)
@@ -362,38 +365,42 @@ async def submit_update_database_form(
 
 @app.put(
     "/api/backend/update/database/{database_id}",
-    response_model=DbInfo,
+    response_model=DbInfoModel,
     response_model_exclude_none=True,
     tags=["Database"],
 )
-async def api_update_database(database_id: int, db: DbInfoForm) -> DbInfo:
+async def api_update_database(database_id: int, form: DbInfoForm) -> DbInfoModel:
     with Session(db_engine) as session:
-        statement = select(DbInfo).where(DbInfo.id == database_id)
-        old_db: DbInfo | None = session.exec(statement).first()
-        if old_db is None:
+        statement = select(DbInfoModel).where(DbInfoModel.id == database_id)
+        db: DbInfoModel | None = session.exec(statement).first()
+        if db is None:
             raise HTTPException(status_code=404, detail="Database not found")
-        old_db.name = db.name
-        old_db.description = db.description
-        old_db.category = db.category
-        session.add(old_db)
+        db_info: DbInfo = DbInfo(**form.model_dump())
+        db.name = db_info.name
+        db.description = db_info.description
+        db.category = db_info.category
+        db.updated_at = db_info.updated_at
+        session.add(db)
         session.commit()
-        session.refresh(old_db)
+        session.refresh(db)
 
-    return old_db
+    return db
 
 
 @app.delete(
     "/api/backend/delete/database/{database_id}",
-    response_model=DbInfo,
+    response_model=DbInfoModel,
     tags=["Database"],
 )
-async def api_delete_database(database_id: int) -> DbInfo:
+async def api_delete_database(database_id: int) -> DbInfoModel:
     with Session(db_engine) as session:
-        statement = select(DbInfo).where(DbInfo.id == database_id)
-        db: DbInfo | None = session.exec(statement).first()
+        statement = select(DbInfoModel).where(DbInfoModel.id == database_id)
+        db: DbInfoModel | None = session.exec(statement).first()
         if db is None:
             raise HTTPException(status_code=404, detail="Database not found")
-        db.status = "deleted"
+        db_info: DbInfo = DbInfo(**db.model_dump())
+        db_info.status = "deleted"
+        db.status = db_info.status
         session.add(db)
         session.commit()
         session.refresh(db)
@@ -429,12 +436,15 @@ async def submit_field_form(
     field_form: Annotated[FieldInfoForm, fastui_form(FieldInfoForm)], database_id: int
 ) -> list[AnyComponent]:
     with Session(db_engine) as session:
-        db_field = FieldInfo(**field_form.model_dump(), db_id=database_id)
-        session.add(db_field)
+        field_info: FieldInfo = FieldInfo(**field_form.model_dump(), db_id=database_id)
+        db: FieldInfoModel = FieldInfoModel(**field_info.model_dump())
+        session.add(db)
         session.commit()
-        session.refresh(db_field)
+        session.refresh(db)
     with Session(db_engine) as session:
-        field_statement = select(FieldInfo).where(FieldInfo.db_id == database_id)
+        field_statement = select(FieldInfoModel).where(
+            FieldInfoModel.db_id == database_id
+        )
         db_fields = session.exec(field_statement).all()
         display_db_fields = [FieldInfoForm(**field.model_dump()) for field in db_fields]
 
@@ -455,13 +465,14 @@ async def submit_field_form(
 
 @app.post(
     "/api/backend/create/databaseField/{database_id}",
-    response_model=FieldInfo,
+    response_model=FieldInfoModel,
     response_model_exclude_none=True,
     tags=["Field"],
 )
-async def api_create_field(form: FieldInfoForm, database_id: int) -> FieldInfo:
+async def api_create_field(form: FieldInfoForm, database_id: int) -> FieldInfoModel:
     with Session(db_engine) as session:
-        db = FieldInfo(**form.model_dump(), db_id=database_id)
+        field_info: FieldInfo = FieldInfo(**form.model_dump(), db_id=database_id)
+        db: FieldInfoModel = FieldInfoModel(**field_info.model_dump())
         session.add(db)
         session.commit()
         session.refresh(db)
@@ -471,16 +482,15 @@ async def api_create_field(form: FieldInfoForm, database_id: int) -> FieldInfo:
 
 @app.get(
     "/api/backend/read/databaseField/{database_id}/{field_id}",
-    response_model=FieldInfo,
+    response_model=FieldInfoModel,
     tags=["Field"],
 )
-async def api_get_field(database_id: int, field_id: int) -> FieldInfo:
+async def api_get_field(database_id: int, field_id: int) -> FieldInfoModel:
     with Session(db_engine) as session:
-        # db: DbInfo = session.query(DbInfo).filter(DbInfo.id == database_id).first()
-        statement = select(FieldInfo).where(
-            FieldInfo.id == field_id and FieldInfo.db_id == database_id
+        statement = select(FieldInfoModel).where(
+            FieldInfoModel.id == field_id and FieldInfoModel.db_id == database_id
         )
-        db: FieldInfo | None = session.exec(statement).first()
+        db: FieldInfoModel | None = session.exec(statement).first()
         if db is None:
             raise HTTPException(status_code=404, detail="Field not found")
     return db
@@ -488,71 +498,72 @@ async def api_get_field(database_id: int, field_id: int) -> FieldInfo:
 
 @app.get(
     "/api/backend/read/databaseField",
-    response_model=Sequence[FieldInfo],
+    response_model=Sequence[FieldInfoModel],
     tags=["Field"],
 )
-async def api_get_all_fields() -> Sequence[FieldInfo]:
+async def api_get_all_fields() -> Sequence[FieldInfoModel]:
     with Session(db_engine) as session:
-        statement = select(FieldInfo).where(FieldInfo.is_active)
-        dbs: Sequence[FieldInfo] = session.exec(statement).all()
+        statement = select(FieldInfoModel).where(FieldInfoModel.is_active)
+        dbs: Sequence[FieldInfoModel] = session.exec(statement).all()
 
     return dbs
 
 
 @app.get(
     "/api/backend/read/databaseField/{database_id}",
-    response_model=Sequence[FieldInfo],
+    response_model=Sequence[FieldInfoModel],
     tags=["Field"],
 )
-async def api_get_fields(database_id: int) -> Sequence[FieldInfo]:
+async def api_get_fields(database_id: int) -> Sequence[FieldInfoModel]:
     with Session(db_engine) as session:
-        # db: DbInfo = session.query(DbInfo).filter(DbInfo.id == database_id).first()
-        statement = select(FieldInfo).where(
-            FieldInfo.db_id == database_id and FieldInfo.is_active
+        # db: DbInfoModel = session.query(DbInfoModel).filter(DbInfoModel.id == database_id).first()
+        statement = select(FieldInfoModel).where(
+            FieldInfoModel.db_id == database_id and FieldInfoModel.is_active
         )
-        dbs: Sequence[FieldInfo] = session.exec(statement).all()
+        dbs: Sequence[FieldInfoModel] = session.exec(statement).all()
     return dbs
 
 
 @app.put(
     "/api/backend/update/databaseField/{database_id}/{field_id}",
-    response_model=FieldInfo,
+    response_model=FieldInfoModel,
     response_model_exclude_none=True,
     tags=["Field"],
 )
 async def api_update_field(
-    database_id: int, field_id: int, db: FieldInfoForm
-) -> FieldInfo:
+    database_id: int, field_id: int, form: FieldInfoForm
+) -> FieldInfoModel:
     with Session(db_engine) as session:
-        statement = select(FieldInfo).where(
-            FieldInfo.id == field_id and FieldInfo.db_id == database_id
+        statement = select(FieldInfoModel).where(
+            FieldInfoModel.id == field_id and FieldInfoModel.db_id == database_id
         )
-        old_db: FieldInfo | None = session.exec(statement).first()
-        if old_db is None:
+        db: FieldInfoModel | None = session.exec(statement).first()
+        if db is None:
             raise HTTPException(status_code=404, detail="Field not found")
-        old_db.name = db.name
-        old_db.data_type = db.data_type
-        old_db.required = db.required
-        old_db.default = db.default
-
-        session.add(old_db)
+        db_info: FieldInfo = FieldInfo(**form.model_dump())
+        db.name = db_info.name
+        db.data_type = db_info.data_type
+        db.required = db_info.required
+        db.default = db_info.default
+        db.updated_at = db_info.updated_at
+        session.add(db)
         session.commit()
-        session.refresh(old_db)
+        session.refresh(db)
 
-    return old_db
+    return db
 
 
 @app.delete(
     "/api/backend/delete/databaseField/{database_id}/{field_id}",
-    response_model=FieldInfo,
+    response_model=FieldInfoModel,
     tags=["Field"],
 )
-async def api_delete_field(database_id: int, field_id: int) -> FieldInfo:
+async def api_delete_field(database_id: int, field_id: int) -> FieldInfoModel:
     with Session(db_engine) as session:
-        statement = select(FieldInfo).where(
-            FieldInfo.id == field_id and FieldInfo.db_id == database_id
+        statement = select(FieldInfoModel).where(
+            FieldInfoModel.id == field_id and FieldInfoModel.db_id == database_id
         )
-        db: FieldInfo | None = session.exec(statement).first()
+        db: FieldInfoModel | None = session.exec(statement).first()
         if db is None:
             raise HTTPException(status_code=404, detail="Field not found")
         db.is_active = False
@@ -564,18 +575,18 @@ async def api_delete_field(database_id: int, field_id: int) -> FieldInfo:
 
 @app.delete(
     "/api/backend/delete/databaseField/{database_id}",
-    response_model=Sequence[FieldInfo],
+    response_model=Sequence[FieldInfoModel],
     tags=["Field"],
 )
-async def api_delete_fields(database_id: int) -> Sequence[FieldInfo]:
+async def api_delete_fields(database_id: int) -> Sequence[FieldInfoModel]:
     with Session(db_engine) as session:
-        db_statement = select(DbInfo).where(DbInfo.id == database_id)
-        db: DbInfo | None = session.exec(db_statement).first()
+        db_statement = select(DbInfoModel).where(DbInfoModel.id == database_id)
+        db: DbInfoModel | None = session.exec(db_statement).first()
         if db is None or db.status == "deleted":
-            statement = select(FieldInfo).where(
-                FieldInfo.db_id == database_id and FieldInfo.is_active
+            statement = select(FieldInfoModel).where(
+                FieldInfoModel.db_id == database_id and FieldInfoModel.is_active
             )
-            db_fields: Sequence[FieldInfo] = session.exec(statement).all()
+            db_fields: Sequence[FieldInfoModel] = session.exec(statement).all()
             if db_fields is not None and len(db_fields) > 0:
                 for field in db_fields:
                     field.is_active = False
