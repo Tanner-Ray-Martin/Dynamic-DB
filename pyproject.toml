@@ -34,6 +34,7 @@ mypy = ">=1.11.1,<1.12"
 test = "pytest"
 pre_commit = "pre-commit run --all-files"
 mypy_poc = "mypy POC --check-untyped-defs --ignore-missing-imports"
+poc = "uvicorn POC.api.main:app --reload"
 
 [tool.pixi.feature.format.tasks]
 format = "ruff"

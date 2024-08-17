@@ -43,21 +43,21 @@ def db_field_form() -> FieldInfoForm:
 
 @pytest.fixture
 def frontend_url() -> str:
-    return "/api/forms/"
+    return "/forms/"
 
 
 @pytest.fixture
 def backend_url() -> str:
-    return "/api/backend/"
+    return "/api/"
 
 
 @pytest.mark.parametrize(
     "url, expected_status, expected_response",
     [
-        ("create/database", 200, list),
-        ("create/database/does/not/exist", 400, JSONDecodeError),
-        ("create/databaseField/1", 200, list),
-        ("create/databaseField/does/not/exist", 400, JSONDecodeError),
+        ("databases/create", 200, list),
+        ("databases/create/does/not/exist", 400, JSONDecodeError),
+        ("fields/create/1", 200, list),
+        ("fields/create/does/not/exist", 400, JSONDecodeError),
     ],
 )
 def test_create_new_database(
@@ -76,8 +76,8 @@ def test_create_new_database(
 @pytest.mark.parametrize(
     "url, expected_status, expected_response",
     [
-        ("create/database", 200, list),
-        ("create/database/does/not/exist", 405, dict),
+        ("databases/create", 200, list),
+        ("databases/create/does/not/exist", 405, dict),
     ],
 )
 def test_create_database(
@@ -96,8 +96,8 @@ def test_create_database(
 @pytest.mark.parametrize(
     "url, expected_status, expected_response",
     [
-        ("create/databaseField/1", 200, list),
-        ("create/databaseField/does/not/exist", 405, dict),
+        ("fields/create/1", 200, list),
+        ("fields/create/does/not/exist", 405, dict),
     ],
 )
 def test_create_database_field(
@@ -116,12 +116,12 @@ def test_create_database_field(
 @pytest.mark.parametrize(
     "url, expected_status, expected_response",
     [
-        ("read/database", 200, list),
-        ("read/database/does/not/exist", 400, JSONDecodeError),
-        ("read/database/1", 200, dict),
-        ("read/database/1/does/not/exist", 400, JSONDecodeError),
-        ("read/databaseField", 200, list),
-        ("read/databaseField/does/not/exist", 400, JSONDecodeError),
+        ("databases/read", 200, list),
+        ("databases/read/does/not/exist", 400, JSONDecodeError),
+        ("databases/read/1", 200, dict),
+        ("databases/read/1/does/not/exist", 400, JSONDecodeError),
+        ("fields/read", 200, list),
+        ("fields/read/does/not/exist", 400, JSONDecodeError),
     ],
 )
 def test_list_databases(
@@ -140,8 +140,8 @@ def test_list_databases(
 @pytest.mark.parametrize(
     "url, expected_status, expected_response",
     [
-        ("update/database/1", 200, DbInfo),
-        ("update/database/1/does/not/exist", 405, MethodNotAllowedResponse),
+        ("databases/update/1", 200, DbInfo),
+        ("databases/update/1/does/not/exist", 405, MethodNotAllowedResponse),
     ],
 )
 def test_update_database(
@@ -160,8 +160,8 @@ def test_update_database(
 @pytest.mark.parametrize(
     "url, expected_status, expected_response",
     [
-        ("update/databaseField/1/1", 200, FieldInfo),
-        ("update/database/1/1/does/not/exist", 405, MethodNotAllowedResponse),
+        ("fields/update/1/1", 200, FieldInfo),
+        ("databases/update/1/1/does/not/exist", 405, MethodNotAllowedResponse),
     ],
 )
 def test_update_database_field(
